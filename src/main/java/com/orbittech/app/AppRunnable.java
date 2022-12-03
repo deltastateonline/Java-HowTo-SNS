@@ -45,7 +45,7 @@ public class AppRunnable {
 		
 		try {
 			
-			ExecutorService taskExecutor = Executors.newFixedThreadPool(10);
+			ExecutorService taskExecutor = Executors.newFixedThreadPool(50);
 			
 			props = Proploader.readProps("resources/config.properties");
 			
@@ -93,7 +93,7 @@ public class AppRunnable {
 			return files;
 		}
 		
-		//System.out.println(currentFolder);
+		System.out.println(currentFolder);
 		for(File f : currentFolder.listFiles())
 			processFolder(taskExecutor,files, f);
 		
