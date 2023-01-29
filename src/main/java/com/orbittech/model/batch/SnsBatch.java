@@ -52,9 +52,7 @@ public class SnsBatch {
 		
 	}
 
-	public void flushBatch() {
-		// TODO Auto-generated method stub
-		
+	public void flushBatch() {		
 		if(this.currentbatch != null && this.currentbatch.size() > 0) {
 			
 			System.out.println("**********************************");

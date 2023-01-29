@@ -29,9 +29,7 @@ public class SnsFile extends com.orbittech.model.SnsFile {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public PublishBatchRequestEntry batchEntry() {
-		
-		
+	public PublishBatchRequestEntry batchEntry() {		
 		
 		try {			
 			
