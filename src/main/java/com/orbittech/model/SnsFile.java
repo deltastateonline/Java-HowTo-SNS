@@ -31,30 +31,38 @@ public class SnsFile {
 	public SnsFile(File currentFile, ObjectMapper objMapper, SnsClient snsClient, String topicArn) {
 		// TODO Auto-generated constructor stub
 		
-		this.filename = currentFile.toString();
-		this.s3Key = getS3Key(currentFile);
-		this.filesize = getFileSizeMegaBytes(currentFile);
-		
-		this.objMapper = objMapper;
-		
-		try {
-			this.mimetype = Files.probeContentType(currentFile.toPath());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Error Getting Mimetype.");
-			this.mimetype = null;
-		}
-				
-		if(this.mimetype == null) {
-			this.mimetype = "null";
-    	}
+		this(currentFile, objMapper);
 		
 		this.snsClient = snsClient;
-		this.topicArn = topicArn;
+		this.topicArn = topicArn;	
 		
 	}
 
 	
+
+	public SnsFile(File currentFile, ObjectMapper objMapper) {
+		// TODO Auto-generated constructor stub
+		// TODO Auto-generated constructor stub
+			this.filename = currentFile.toString();
+			this.s3Key = getS3Key(currentFile);
+			this.filesize = getFileSizeMegaBytes(currentFile);
+			
+			this.objMapper = objMapper;
+			
+			try {
+				this.mimetype = Files.probeContentType(currentFile.toPath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Error Getting Mimetype.");
+				this.mimetype = null;
+			}
+					
+			if(this.mimetype == null) {
+				this.mimetype = "null";
+	    	}
+	}
+
+
 
 	public String getFilename() {
 		return filename;
