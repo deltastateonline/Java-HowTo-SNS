@@ -152,5 +152,64 @@ public class SnsFile extends com.orbittech.model.SnsFile implements Runnable {
 }
 ```
 
+### Using Batches
+To publish messages in batches to SNS, these messages have to be constructed as 
+ ```PublishBatchRequestEntry```.
+This can be done extending the existing SnsFile and adding a new method.
+
+```
+	public PublishBatchRequestEntry batchEntry() {		
+		
+		try {			
+			
+			MessageAttributeValue attribute = MessageAttributeValue.builder()
+					.dataType("String").stringValue(this.getMimetype()).build();
+			
+			Map<String,MessageAttributeValue > attributeMap = new HashMap();
+			attributeMap.put("mimeType", attribute);			
+			
+			PublishBatchRequestEntry anEntry = PublishBatchRequestEntry					
+					.builder()
+					.id(Integer.toString(this.hashCode()))
+					.message(this.toJson())
+					.messageAttributes(attributeMap)
+					.build();
+			
+			return anEntry;			
+		} catch (JsonProcessingException e) {			
+			System.out.println("Error Occured Creating Entry "+ e);
+		}		
+		return null;
+	}
+```
+Another requirement is that only a max of 10 entries which are added to a java collection object can be published in a batch.
+```
+	public void addBatchEntry(PublishBatchRequestEntry entry) {
+		
+		if(this.currentbatch == null)
+			this.currentbatch = new ArrayList<PublishBatchRequestEntry>();
+		
+		this.currentbatch.add(entry);
+		if(currentbatch.size() == 10) {
+			
+			this.publishBatch(this.currentbatch);
+			this.currentbatch.clear();
+		}		
+		
+	}
+```
+
+And finally any remaining messages must be flushed.
+```
+	public void flushBatch() {		
+		if(this.currentbatch != null && this.currentbatch.size() > 0) {
+			
+			System.out.println("**********************************");
+			System.out.println("Remaining Items = "+this.currentbatch.size());					
+			this.publishBatch(this.currentbatch);			
+		}
+		
+	}
+```
 
 [playlist]: https://www.youtube.com/playlist?list=PLtPSv_jWEuonMHkHcFyw41pBNmN5otdFy
