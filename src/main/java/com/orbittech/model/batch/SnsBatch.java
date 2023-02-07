@@ -21,7 +21,10 @@ public class SnsBatch {
 		this.snsClient = snsClient;
 		this.topicArn = topicArn;
 	}
-	
+	/**
+	 * given a collection of batch entries, publish to aws
+	 * @param batch
+	 */
 	public void publishBatch(Collection<PublishBatchRequestEntry> batch) {
 		
 		PublishBatchRequest pbr = PublishBatchRequest.builder()
@@ -38,6 +41,12 @@ public class SnsBatch {
 		return;		
 	}
 	
+	/**
+	 * Add an entry into the batch collection and if we have a size of 10 then
+	 * publish to AWS
+	 * Clear the collection afterwards
+	 * @param entry
+	 */
 	public void addBatchEntry(PublishBatchRequestEntry entry) {
 		
 		if(this.currentbatch == null)
@@ -51,6 +60,10 @@ public class SnsBatch {
 		}		
 		
 	}
+	/**
+	 *	Handle cases where there may still be entries in the batch collection
+	 *	
+	 */
 
 	public void flushBatch() {		
 		if(this.currentbatch != null && this.currentbatch.size() > 0) {
